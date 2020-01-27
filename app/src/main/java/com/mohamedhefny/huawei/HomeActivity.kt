@@ -1,9 +1,9 @@
 package com.mohamedhefny.huawei
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.toolbar_home.*
@@ -29,9 +29,7 @@ class HomeActivity : AppCompatActivity() {
         home_username.text = HuaweiIdAuthManager.getAuthResult()
             .familyName.plus(" ${HuaweiIdAuthManager.getAuthResult().givenName}")
 
-        val avatarLink: String = HuaweiIdAuthManager.getAuthResult().avatarUriString
-
-        Picasso.get().load(if (avatarLink.isNotEmpty()) avatarLink else "N/A")
+        Picasso.get().load(HuaweiIdAuthManager.getAuthResult().avatarUri)
             .error(R.mipmap.ic_launcher).into(home_user_pic)
     }
 }
