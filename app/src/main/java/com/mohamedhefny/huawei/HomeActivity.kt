@@ -30,6 +30,8 @@ class HomeActivity : AppCompatActivity() {
             .familyName.plus(" ${HuaweiIdAuthManager.getAuthResult().givenName}")
 
         Picasso.get().load(HuaweiIdAuthManager.getAuthResult().avatarUri)
-            .error(R.mipmap.ic_launcher).into(home_user_pic)
+            .placeholder(R.drawable.ic_user)
+            .error(R.mipmap.ic_launcher)
+            .into(home_user_pic)
     }
 }
