@@ -1,8 +1,9 @@
 package com.mohamedhefny.huawei
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.huawei.hmf.tasks.Task
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
@@ -22,6 +23,7 @@ class SignInActivity : AppCompatActivity() {
     lazy { HuaweiIdAuthManager.getService(this, huaweiIdAuthParams) }
 
     private val HUAWEI_AUTH_RQ = 101
+    private val TAG: String = SignInActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +40,9 @@ class SignInActivity : AppCompatActivity() {
             val authHuaweiIdTask: Task<AuthHuaweiId> =
                 HuaweiIdAuthManager.parseAuthResultFromIntent(data)
             if (authHuaweiIdTask.isSuccessful) {//login success
-
+                Log.d(TAG, "SignIn success")
             } else {//login failed
-
+                Log.d(TAG, "SignIn Failed")
             }
         }
     }
