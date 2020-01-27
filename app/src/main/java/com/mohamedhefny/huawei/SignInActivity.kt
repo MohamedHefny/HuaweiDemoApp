@@ -40,7 +40,8 @@ class SignInActivity : AppCompatActivity() {
             val authHuaweiIdTask: Task<AuthHuaweiId> =
                 HuaweiIdAuthManager.parseAuthResultFromIntent(data)
             if (authHuaweiIdTask.isSuccessful) {//login success
-                Log.d(TAG, "SignIn success")
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
             } else {//login failed
                 Log.d(TAG, "SignIn Failed")
             }
