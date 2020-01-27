@@ -10,7 +10,7 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import com.huawei.hms.support.hwid.result.AuthHuaweiId
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_signin.*
 
 class SignInActivity : AppCompatActivity() {
 
@@ -27,7 +27,7 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_signin)
 
         huawei_auth_btn.setOnClickListener {
             startActivityForResult(huaweiIdAuthService.signInIntent, HUAWEI_AUTH_RQ)
@@ -40,7 +40,8 @@ class SignInActivity : AppCompatActivity() {
             val authHuaweiIdTask: Task<AuthHuaweiId> =
                 HuaweiIdAuthManager.parseAuthResultFromIntent(data)
             if (authHuaweiIdTask.isSuccessful) {//login success
-                Log.d(TAG, "SignIn success")
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
             } else {//login failed
                 Log.d(TAG, "SignIn Failed")
             }
