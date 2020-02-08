@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">HuaweiDemoApp</string>
+
+    <!--Messages strings-->
+    <string name="cant_load_products">Error. Can\'t load products!</string>
+    <string name="pay_api_error">Payment API error, Please contact support team!</string>
+    <string name="cant_verify_payment">Sign payment error, Please contact support team!</string>
+    <string name="payment_canceled">Payment, Cancelled.</string>
+    <string name="product_owned">You owned this product.</string>
+    <string name="payment_field">Payment field!</string>
+
 </resources>

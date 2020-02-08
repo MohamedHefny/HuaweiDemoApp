@@ -1,4 +1,4 @@
-package com.mohamedhefny.huawei.home
+package com.mohamedhefny.huawei.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
