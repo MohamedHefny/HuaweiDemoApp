@@ -3,16 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.signin.SignInActivity">
+    android:layout_height="wrap_content">
 
-    <com.huawei.hms.support.hwid.ui.HuaweiIdAuthButton
-        android:id="@+id/huawei_auth_btn"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/item_product_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="12dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Product name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

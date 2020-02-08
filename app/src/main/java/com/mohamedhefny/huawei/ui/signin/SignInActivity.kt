@@ -1,4 +1,4 @@
-package com.mohamedhefny.huawei
+package com.mohamedhefny.huawei.ui.signin
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,8 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import com.huawei.hms.support.hwid.result.AuthHuaweiId
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
+import com.mohamedhefny.huawei.R
+import com.mohamedhefny.huawei.ui.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_signin.*
 
 class SignInActivity : AppCompatActivity() {
