@@ -11,12 +11,15 @@ import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.mohamedhefny.huawei.utils.PaymentHelper
 import com.mohamedhefny.huawei.R
 import com.mohamedhefny.huawei.ui.signin.SignInActivity
+import com.mohamedhefny.huawei.ui.sub_features.products.ProductCallback
+import com.mohamedhefny.huawei.ui.sub_features.products.ProductsSheet
 import com.mohamedhefny.huawei.utils.REQ_CODE_BUY
 import com.mohamedhefny.huawei.utils.showToast
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.sheet_products_layout.*
 import kotlinx.android.synthetic.main.toolbar_home.*
 
-class HomeActivity : AppCompatActivity(), ProductsAdapter.ProductCallback {
+class HomeActivity : AppCompatActivity(), ProductCallback {
 
     private val paymentHelper: PaymentHelper by lazy { PaymentHelper() }
     private val TAG: String = HomeActivity::class.java.simpleName
@@ -42,11 +45,9 @@ class HomeActivity : AppCompatActivity(), ProductsAdapter.ProductCallback {
             .familyName.plus(" ${HuaweiIdAuthManager.getAuthResult().givenName}")
 
         Picasso.get().load(HuaweiIdAuthManager.getAuthResult().avatarUri)
-            .placeholder(R.drawable.ic_user)
-            .error(R.mipmap.ic_launcher)
+            .placeholder(R.drawable.ic_user).error(R.mipmap.ic_launcher)
             .into(home_user_pic)
     }
-
 
     /**
      * Use PaymentHelper to get the product for parches.
@@ -54,7 +55,14 @@ class HomeActivity : AppCompatActivity(), ProductsAdapter.ProductCallback {
     private fun getAvailableProducts() {
         paymentHelper.loadProducts(this)
             .observe(this, Observer {
-                //Set products adapter here.
+                if (it.isNotEmpty())
+                    ProductsSheet().apply {
+                        setProductList(it)
+                        setProductCallback(this@HomeActivity)
+                        show(supportFragmentManager, "ProductsFragment")
+                    }
+                else
+                    showToast(R.string.not_products_available, Toast.LENGTH_LONG)
             })
     }
 

@@ -1,4 +1,4 @@
-package com.mohamedhefny.huawei.ui.home
+package com.mohamedhefny.huawei.ui.sub_features.products
 
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,9 @@ class ProductsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val productView: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_product, parent, false)
-        return ProductViewHolder(productView)
+        return ProductViewHolder(
+            productView
+        )
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
@@ -33,9 +35,9 @@ class ProductsAdapter(
         private val productName = itemView.item_product_name
 
         fun bindViewData(productInfo: ProductInfo) {
-            productName.text = productInfo.productName
+            productName.text = layoutPosition.plus(1)
+                .toString().plus("- ${productInfo.productName}")
         }
-
     }
 
     interface ProductCallback {
