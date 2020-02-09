@@ -9,6 +9,7 @@
     <string name="payment_canceled">Payment, Cancelled.</string>
     <string name="product_owned">You owned this product.</string>
     <string name="payment_field">Payment field!</string>
+    <string name="still_loading_video">Video is still loading, Please wait for seconds!</string>
 
     <!--Products sheet strings-->
     <string name="products_sheet_title">Products</string>

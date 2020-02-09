@@ -13,6 +13,7 @@
             android:id="@+id/home_user_pic"
             android:layout_width="@dimen/user_profile_image"
             android:layout_height="@dimen/user_profile_image"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
