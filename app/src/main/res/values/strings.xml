@@ -11,6 +11,9 @@
     <string name="payment_field">Payment field!</string>
     <string name="still_loading_video">Video is still loading, Please wait for seconds!</string>
 
+    <!--SignIn screen strings-->
+    <string name="signin_welcome_msg">Welcome to Huawei VOD demo app, Please login to start using the app.</string>
+
     <!--Home screen strings-->
     <string name="play">Play</string>
     <string name="home_welcome_msg">Welcome to the VOD demo app, You can pay and play this video.</string>
