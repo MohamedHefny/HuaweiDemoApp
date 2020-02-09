@@ -42,7 +42,7 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
         initVideo()
 
         home_video_view.setOnClickListener {
-            if (!canPlayVideo) {
+            if (canPlayVideo) {
                 if (!videoPrepared) {
                     showToast(R.string.still_loading_video)
                     return@setOnClickListener
