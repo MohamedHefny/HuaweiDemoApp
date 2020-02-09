@@ -1,28 +1,31 @@
 package com.mohamedhefny.huawei.ui.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.MediaController
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.huawei.hms.iap.entity.ProductInfo
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
-import com.mohamedhefny.huawei.utils.PaymentHelper
 import com.mohamedhefny.huawei.R
 import com.mohamedhefny.huawei.ui.signin.SignInActivity
 import com.mohamedhefny.huawei.ui.sub_features.products.ProductCallback
 import com.mohamedhefny.huawei.ui.sub_features.products.ProductsSheet
-import com.mohamedhefny.huawei.utils.REQ_CODE_BUY
-import com.mohamedhefny.huawei.utils.showToast
+import com.mohamedhefny.huawei.utils.*
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.sheet_products_layout.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.toolbar_home.*
 
 class HomeActivity : AppCompatActivity(), ProductCallback {
 
     private val paymentHelper: PaymentHelper by lazy { PaymentHelper() }
     private val TAG: String = HomeActivity::class.java.simpleName
+
+    private var videoPrepared: Boolean = false
+    private var canPlayVideo: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +39,26 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
 
         bindUserData()
 
+        initVideo()
+
+        home_video_view.setOnClickListener {
+            if (canPlayVideo) {
+                if (!videoPrepared) {
+                    showToast(R.string.still_loading_video)
+                    return@setOnClickListener
+                }
+                if (home_video_view.isPlaying) {
+                    home_video_play_btn.show()
+                    home_video_view.pause()
+                } else {
+                    home_video_play_btn.hide()
+                    home_video_view.start()
+                }
+            } else
+                getAvailableProducts()
+        }
+
         observePaymentErrors()
-        getAvailableProducts()
     }
 
     private fun bindUserData() {
@@ -47,6 +68,18 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
         Picasso.get().load(HuaweiIdAuthManager.getAuthResult().avatarUri)
             .placeholder(R.drawable.ic_user).error(R.mipmap.ic_launcher)
             .into(home_user_pic)
+    }
+
+    private fun initVideo() {
+        home_video_view.setVideoURI(Uri.parse(VIDEO_URL))
+        home_video_view.setOnPreparedListener {
+            videoPrepared = true
+            it.seekTo(100)
+            home_video_loading.hide()
+        }
+        home_video_view.setOnCompletionListener {
+            home_video_play_btn.show()
+        }
     }
 
     /**
@@ -71,12 +104,8 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
      */
     private fun observePaymentStatus() {
         paymentHelper.isPaymentSuccess.observe(this, Observer {
-            if (it) {
-                showToast("Payed Done!")
-            } else {
-                //Show error
-                showToast("Paying Error!")
-            }
+            if (it) canPlayVideo = true
+            else showToast("Paying Error!")
         })
     }
 
@@ -121,5 +150,10 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
      */
     override fun onProductSelected(productInfo: ProductInfo) {
         paymentHelper.goToPay(this, productInfo.productId)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        home_video_view.stopPlayback()
     }
 }

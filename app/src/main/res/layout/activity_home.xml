@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,4 +11,49 @@
         android:id="@+id/home_toolbar"
         layout="@layout/toolbar_home" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/home_welcome_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/home_welcome_msg"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/home_toolbar" />
+
+    <VideoView
+        android:id="@+id/home_video_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_welcome_text" />
+
+    <ImageView
+        android:id="@+id/home_video_play_btn"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/play"
+        android:src="@drawable/ic_play_btn"
+        app:layout_constraintBottom_toBottomOf="@id/home_video_view"
+        app:layout_constraintEnd_toEndOf="@id/home_video_view"
+        app:layout_constraintStart_toStartOf="@id/home_video_view"
+        app:layout_constraintTop_toTopOf="@id/home_video_view" />
+
+    <ProgressBar
+        android:id="@+id/home_video_loading"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        app:backgroundTint="@color/colorHuawieRed"
+        app:layout_constraintBottom_toBottomOf="@id/home_video_play_btn"
+        app:layout_constraintEnd_toEndOf="@id/home_video_play_btn"
+        app:layout_constraintStart_toStartOf="@id/home_video_play_btn"
+        app:layout_constraintTop_toTopOf="@id/home_video_play_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
