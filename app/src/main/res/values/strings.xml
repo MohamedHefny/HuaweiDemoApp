@@ -2,6 +2,7 @@
     <string name="app_name">HuaweiDemoApp</string>
 
     <!--Messages strings-->
+    <string name="please_wait">Please wait…</string>
     <string name="not_products_available">No products are available!</string>
     <string name="cant_load_products">Error. Can\'t load products!</string>
     <string name="pay_api_error">Payment API error, Please contact support team!</string>

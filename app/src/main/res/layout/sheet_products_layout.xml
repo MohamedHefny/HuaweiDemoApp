@@ -12,8 +12,9 @@
 
     <TextView
         android:id="@+id/products_sheet_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:text="@string/products_sheet_title"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -23,8 +24,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_marginTop="8dp"
+        android:background="@color/colorHuawieRed" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/products_sheet_recycler"

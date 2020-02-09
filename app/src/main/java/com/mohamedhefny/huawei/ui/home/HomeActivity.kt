@@ -54,8 +54,10 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
                     home_video_play_btn.hide()
                     home_video_view.start()
                 }
-            } else
+            } else {
+                showLoading()
                 getAvailableProducts()
+            }
         }
 
         observePaymentErrors()
@@ -88,6 +90,7 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
     private fun getAvailableProducts() {
         paymentHelper.loadProducts(this)
             .observe(this, Observer {
+                hideLoading()
                 if (it.isNotEmpty())
                     ProductsSheet().apply {
                         setProductList(it)
@@ -104,6 +107,7 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
      */
     private fun observePaymentStatus() {
         paymentHelper.isPaymentSuccess.observe(this, Observer {
+            hideLoading()
             if (it) canPlayVideo = true
             else showToast("Paying Error!")
         })
@@ -114,6 +118,7 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
      */
     private fun observePaymentErrors() {
         paymentHelper.paymentError.observe(this, Observer {
+            hideLoading()
             when (it) {
                 PaymentHelper.GET_PRODUCT_INFO_ERROR ->
                     showToast(R.string.cant_load_products)
@@ -149,6 +154,7 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
      * @param productInfo is the selected product object.
      */
     override fun onProductSelected(productInfo: ProductInfo) {
+        showLoading()
         paymentHelper.goToPay(this, productInfo.productId)
     }
 
