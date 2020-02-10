@@ -17,4 +17,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Product name" />
 
+    <TextView
+        android:id="@+id/item_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/item_product_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="1.25 EGP" />
 </androidx.constraintlayout.widget.ConstraintLayout>

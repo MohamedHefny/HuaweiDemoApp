@@ -3,6 +3,7 @@ package com.mohamedhefny.huawei.ui.sub_features.products
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.huawei.hms.iap.entity.ProductInfo
 import com.mohamedhefny.huawei.R
@@ -32,11 +33,13 @@ class ProductsAdapter(
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val productName = itemView.item_product_name
+        private val productName: TextView = itemView.item_product_name
+        private val productPrice: TextView = itemView.item_product_price
 
         fun bindViewData(productInfo: ProductInfo) {
             productName.text = layoutPosition.plus(1)
                 .toString().plus("- ${productInfo.productName}")
+            productPrice.text = productInfo.price
         }
     }
 

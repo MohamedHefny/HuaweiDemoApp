@@ -2,6 +2,7 @@
     <string name="app_name">HuaweiDemoApp</string>
 
     <!--Messages strings-->
+    <string name="please_wait">Please wait…</string>
     <string name="not_products_available">No products are available!</string>
     <string name="cant_load_products">Error. Can\'t load products!</string>
     <string name="pay_api_error">Payment API error, Please contact support team!</string>
@@ -10,6 +11,9 @@
     <string name="product_owned">You owned this product.</string>
     <string name="payment_field">Payment field!</string>
     <string name="still_loading_video">Video is still loading, Please wait for seconds!</string>
+
+    <!--SignIn screen strings-->
+    <string name="signin_welcome_msg">Welcome to Huawei VOD demo app, Please login to start using the app.</string>
 
     <!--Home screen strings-->
     <string name="play">Play</string>

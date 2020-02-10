@@ -12,6 +12,8 @@ import com.huawei.hms.support.hwid.result.AuthHuaweiId
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
 import com.mohamedhefny.huawei.R
 import com.mohamedhefny.huawei.ui.home.HomeActivity
+import com.mohamedhefny.huawei.utils.hideLoading
+import com.mohamedhefny.huawei.utils.showLoading
 import kotlinx.android.synthetic.main.activity_signin.*
 
 class SignInActivity : AppCompatActivity() {
@@ -32,12 +34,14 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signin)
 
         huawei_auth_btn.setOnClickListener {
+            showLoading()
             startActivityForResult(huaweiIdAuthService.signInIntent, HUAWEI_AUTH_RQ)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        hideLoading()
         if (requestCode == HUAWEI_AUTH_RQ) {
             val authHuaweiIdTask: Task<AuthHuaweiId> =
                 HuaweiIdAuthManager.parseAuthResultFromIntent(data)

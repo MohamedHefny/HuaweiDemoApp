@@ -8,6 +8,8 @@ import android.widget.MediaController
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.huawei.hms.iap.entity.ProductInfo
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.mohamedhefny.huawei.R
@@ -21,11 +23,13 @@ import kotlinx.android.synthetic.main.toolbar_home.*
 
 class HomeActivity : AppCompatActivity(), ProductCallback {
 
-    private val paymentHelper: PaymentHelper by lazy { PaymentHelper() }
+    private val homeViewModel: HomeViewModel by
+    lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
+
     private val TAG: String = HomeActivity::class.java.simpleName
 
     private var videoPrepared: Boolean = false
-    private var canPlayVideo: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +46,7 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
         initVideo()
 
         home_video_view.setOnClickListener {
-            if (canPlayVideo) {
+            if (homeViewModel.canPlayVideo) {
                 if (!videoPrepared) {
                     showToast(R.string.still_loading_video)
                     return@setOnClickListener
@@ -54,8 +58,10 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
                     home_video_play_btn.hide()
                     home_video_view.start()
                 }
-            } else
+            } else {
+                showLoading()
                 getAvailableProducts()
+            }
         }
 
         observePaymentErrors()
@@ -82,12 +88,10 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
         }
     }
 
-    /**
-     * Use PaymentHelper to get the product for parches.
-     */
     private fun getAvailableProducts() {
-        paymentHelper.loadProducts(this)
+        homeViewModel.getAvailableProducts()
             .observe(this, Observer {
+                hideLoading()
                 if (it.isNotEmpty())
                     ProductsSheet().apply {
                         setProductList(it)
@@ -99,21 +103,17 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
             })
     }
 
-    /**
-     * Handel payment success or failed.
-     */
     private fun observePaymentStatus() {
-        paymentHelper.isPaymentSuccess.observe(this, Observer {
-            if (it) canPlayVideo = true
+        homeViewModel.getPaymentStatus().observe(this, Observer {
+            hideLoading()
+            if (it) homeViewModel.productPayed()
             else showToast("Paying Error!")
         })
     }
 
-    /**
-     * Handel different error cases during the payment flow.
-     */
     private fun observePaymentErrors() {
-        paymentHelper.paymentError.observe(this, Observer {
+        homeViewModel.getErrorObservable().observe(this, Observer {
+            hideLoading()
             when (it) {
                 PaymentHelper.GET_PRODUCT_INFO_ERROR ->
                     showToast(R.string.cant_load_products)
@@ -137,7 +137,7 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
         if (requestCode == REQ_CODE_BUY) {
             if (data != null) {
                 observePaymentStatus()
-                paymentHelper.onActivityResult(this, data)
+                homeViewModel.sendPaymentResultData(data)
             } else
                 Toast.makeText(this, "PaymentError", Toast.LENGTH_SHORT).show()
         }
@@ -149,7 +149,8 @@ class HomeActivity : AppCompatActivity(), ProductCallback {
      * @param productInfo is the selected product object.
      */
     override fun onProductSelected(productInfo: ProductInfo) {
-        paymentHelper.goToPay(this, productInfo.productId)
+        showLoading()
+        homeViewModel.goToPay(this, productInfo.productId)
     }
 
     override fun onStop() {

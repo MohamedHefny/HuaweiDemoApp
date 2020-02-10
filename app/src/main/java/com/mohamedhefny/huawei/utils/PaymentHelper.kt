@@ -14,7 +14,7 @@ import com.huawei.hms.iap.entity.*
 import org.json.JSONException
 
 
-class PaymentHelper {
+class PaymentHelper(private val context: Context) {
 
     private val _paymentError: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     val paymentError: LiveData<Int> by lazy { _paymentError }
@@ -26,11 +26,11 @@ class PaymentHelper {
 
     /**
      * load the available products that user can purchase for.
-     * @param activity the calling activity or context.
+     * @param context the calling activity or context.
      */
-    fun loadProducts(activity: Activity): LiveData<List<ProductInfo>> {
+    fun loadProducts(): LiveData<List<ProductInfo>> {
         val productInfoList = MutableLiveData<List<ProductInfo>>()
-        val iapClient: IapClient = Iap.getIapClient(activity)
+        val iapClient: IapClient = Iap.getIapClient(context)
         iapClient.obtainProductInfo(createProductInfoReq())
             .addOnSuccessListener {
                 productInfoList.postValue(it.productInfoList)
@@ -54,15 +54,15 @@ class PaymentHelper {
 
     /**
      * create orders for in-app products in the PMS.
-     * @param activity indicates the activity object that initiates a request.
+     * @param callbackActivity indicates the activity object that initiates a request.
      * @param productId ID list of products to be queried. Each product ID must exist and be unique in the current app.
      * @param productType  In-app product type {The IN_APP_CONSUMABLE set as the default one if you don't pass type}.
      */
     fun goToPay(
-        activity: Activity, productId: String,
+        callbackActivity: Activity, productId: String,
         productType: Int = IapClient.PriceType.IN_APP_SUBSCRIPTION
     ) {
-        val iapClient = Iap.getIapClient(activity)
+        val iapClient = Iap.getIapClient(context)
         iapClient.createPurchaseIntent(createPurchaseIntentReq(productId, productType))
             .addOnSuccessListener {
                 when {
@@ -70,7 +70,7 @@ class PaymentHelper {
                     it.status == null -> return@addOnSuccessListener
                     it.status.hasResolution() -> {
                         try {
-                            it.status.startResolutionForResult(activity, REQ_CODE_BUY)
+                            it.status.startResolutionForResult(callbackActivity, REQ_CODE_BUY)
                         } catch (exp: IntentSender.SendIntentException) {
                             Log.e(TAG, exp.message.toString())
                             return@addOnSuccessListener
@@ -103,8 +103,8 @@ class PaymentHelper {
             this.developerPayload = "test"
         }
 
-    fun onActivityResult(activity: Activity, data: Intent) {
-        val purchaseResultInfo = Iap.getIapClient(activity)
+    fun onActivityResult(ctx: Context = context, data: Intent) {
+        val purchaseResultInfo = Iap.getIapClient(ctx)
             .parsePurchaseResultInfoFromIntent(data)
 
         when (purchaseResultInfo.returnCode) {
@@ -115,7 +115,7 @@ class PaymentHelper {
                     PUBLIC_KEY
                 )
                 if (success)
-                    consumeOwnedPurchase(activity, purchaseResultInfo.inAppPurchaseData)
+                    consumeOwnedPurchase(ctx, purchaseResultInfo.inAppPurchaseData)
                 else
                     _paymentError.postValue(Pay_SUCCESSFUL_SIGN_FAILED)
             }
@@ -134,8 +134,8 @@ class PaymentHelper {
      * then the Huawei payment server will update the order status and the user can purchase the product again.
      * @param inAppPurchaseData JSON string that contains purchase order details.
      */
-    private fun consumeOwnedPurchase(context: Context, inAppPurchaseData: String) {
-        val iapClient: IapClient = Iap.getIapClient(context)
+    private fun consumeOwnedPurchase(ctx: Context = context, inAppPurchaseData: String) {
+        val iapClient: IapClient = Iap.getIapClient(ctx)
         iapClient.consumeOwnedPurchase(createConsumeOwnedPurchaseReq(inAppPurchaseData))
             .addOnSuccessListener { _isPaymentSuccess.postValue(true) }
             .addOnFailureListener {
