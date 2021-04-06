@@ -5,3 +5,7 @@ and In-App-Purchases payment SDK as well.
 ## HMS SDKs
 - Account-Kit
 - In-App-Purchases
+
+## Work-flow
+In this project I have been using a simple git work-flow with feature branching model.
+Also, you can find the history of the development process and each feature implementation in a seprate branch and explore it as well.
